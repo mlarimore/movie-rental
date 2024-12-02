@@ -1,11 +1,13 @@
 <?php
 namespace Strategy\Output;
 
+use Model\CartDto;
+
 class OutputStrategy
 {
     public function __invoke(
         string $outputType,
-        array $cartDto
+        CartDto $cartDto
     ) : OutputInterface {
 
         if($outputType ?? '' === 'html'){

@@ -1,17 +1,19 @@
 <?php
 namespace Strategy\Output;
 
+use Model\CartDto;
+
 class HtmlStatement implements OutputInterface
 {
-    private $cartDto = [];
-    private function __construct(array $cartDto)
+    private CartDto $cartDto;
+    private function __construct(CartDto $cartDto)
     {
         $this->cartDto = $cartDto;
     }
 
-    public static function loadCart(array $cartDto) : HtmlStatement
+    public static function loadCart(CartDto $cartDto) : HtmlStatement
     {
-        if (!is_file($cartDto['template'])) {
+        if (!is_file($cartDto->template)) {
             throw new \RuntimeException('Template file not found: ');
         }
 
@@ -38,6 +40,6 @@ class HtmlStatement implements OutputInterface
             return ob_get_clean();
         };
 
-        echo $result($this->cartDto['template'], $this->cartDto);
+        echo $result($this->cartDto->template, $this->cartDto->toArray());
     }
 }

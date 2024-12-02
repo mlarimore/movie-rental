@@ -1,6 +1,7 @@
 <?php
 namespace Service;
 
+use Model\CartDto;
 use Model\Classification;
 use Model\Customer;
 use Model\Movie;
@@ -75,14 +76,12 @@ class CartService
 
     public function toDto()
     {
-        $dto = [
-            'customer' => $this->customer->getName(),
-            'rentals' => $this->rentals,
-            'totalAmount' => $this->getTotalAmount(),
-            'frequentRenterPoints' => $this->getFrequentRenterPoints(),
-            'template' => dirname(__DIR__) . '/views/statement/view.php',
-        ];
-
-        return $dto;
+        return new CartDto(
+            $this->customer->getName(),
+            $this->rentals,
+            $this->getTotalAmount(),
+            $this->getFrequentRenterPoints(),
+            dirname(__DIR__) . '/views/statement/view.php'
+        );
     }
 }
