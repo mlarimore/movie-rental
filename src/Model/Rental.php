@@ -10,13 +10,11 @@ class Rental
     private $daysRented;
     private $price;
 
-    public function __construct(Movie $movie, int $daysRented)
+    public function __construct(Movie $movie, int $daysRented, int $price)
     {
         $this->movie = $movie;
         $this->daysRented = $daysRented;
-        $this->price = (new PriceFactory)(
-            $this->movie->classification()
-        )->rentalPrice($daysRented);
+        $this->price = $price;
     }
 
     public function movie(): Movie

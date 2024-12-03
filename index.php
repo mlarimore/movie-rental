@@ -4,7 +4,10 @@ require_once("autoloader.php");
 
 use Model\Customer;
 use Service\CartService;
+use Service\RentalGenerator;
 use Strategy\Output\OutputStrategy;
+
+$cart = new CartService(new Customer("Susan Ross"));
 
 $moviesToRent = '[
     {"name":"Prognosis Negative","classification":"NEW_RELEASE","daysRented":"3"},
@@ -12,14 +15,13 @@ $moviesToRent = '[
     {"name":"The Pain and the Yearning","classification":"REGULAR","daysRented":"1"}
 ]';
 
-$cart = CartService::addRentalsToCart(
-    new Customer("Susan Ross"),
-    json_decode($moviesToRent, true)
-);
+foreach(RentalGenerator::loadRentals($moviesToRent)->validRentals() as $rental) {
+    $cart->addRental($rental);
+}
 
 $output = (new OutputStrategy)(
     $_REQUEST['output'] ?? '' === 'html',
-    $cart->toDto()
+    $cart->cartDto()
 );
 
 $output->renderNavigation();
