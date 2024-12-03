@@ -17,36 +17,9 @@ class CartService
     /**
      * @param Customer $customer
      */
-    private function __construct(Customer $customer)
+    public function __construct(Customer $customer)
     {
         $this->customer = $customer;
-    }
-
-    /**
-     * This should be an array containing the movie items to rent
-     * @param array $moviesToRentDtoCollection
-     * Example: array(['name' => 'Cool Hand Luke','classification' => 'VINTAGE', 'daysRented' => 5])
-     */
-    public static function addRentalsToCart(
-        Customer $customer,
-        array $moviesToRentDtoCollection
-    ) : CartService {
-
-        $cartService = new CartService($customer);
-
-        foreach ($moviesToRentDtoCollection as $movieToRent) {
-            $cartService->addRental(
-                new Rental(
-                    new Movie(
-                        $movieToRent['name'],
-                        new Classification($movieToRent['classification'])
-                    ),
-                    $movieToRent['daysRented']
-                )
-            );
-        }
-
-        return $cartService;
     }
 
     public function addRental(Rental $rental)
@@ -74,7 +47,7 @@ class CartService
         return $this->frequentRenterPoints;
     }
 
-    public function toDto()
+    public function cartDto()
     {
         return new CartDto(
             $this->customer->getName(),
